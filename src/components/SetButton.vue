@@ -14,7 +14,7 @@ export default {
         isSmallBtn : {
             type: Boolean,
             default: false,
-            require: false
+            require: false,
         },
         showSelect: {
             type: Boolean,
@@ -50,11 +50,11 @@ export default {
     data() {
 
     },
-    method: {
-        onclick(div) {
+    methods: {
+        onClick(div) {
             this.$emit('onSetButtonClick', div);
-        }
-    }
+        },
+    },
 }
 </script>
 <style></style>

@@ -1,101 +1,76 @@
 <template>
     <div id="section">
-        <div id="title">
-            <h1>Todo List</h1>
-        </div>
         <div id="search">
-            <input type="text" placeholder="검색" />
+            <input type="text" placeholder="검색" v-model="searchVal" v-on:keydown.enter="search" />
             <button type="button" v-on:click="search" v-bind:style="searchStyle">조회</button>
         </div>
-        <div id="list" style="margin: 5%;">
-            <div v-for="(todo, index) in todoList" :key="todo.id" class="row">
-                <router-link :to="{ name: 'todoListSaveForm', query: {index: index}}">
+        <TodoList></TodoList>
+        <!-- <div id="list" style="margin: 5%;">
+            <div v-for="(todo, index) in (searchedTodoList.length > 0 ? searchedTodoList : todoList)" :key="todo.id"
+                class="row">
+                <router-link :to="{ name: 'todoListSaveForm', query: { index: index } }">
                     <div class="col">{{ todo.title }}</div>
+                    <div class="col">{{ todo.writer }}</div>
+                    <div class="col">{{ todo.regDate }}</div>
                 </router-link>
-                <div class="col">{{ todo.writer }}</div>
-                <div class="col">{{ todo.regDate }}</div>
                 <button type="button" value="index" v-on:click="deleteTodo(index)">삭제</button>
             </div>
-        </div>
-        <button type="button" v-on:click="saveform">등록</button>
+        </div> -->
+        <!-- <button type="button" v-on:click="saveform">등록</button> -->
+        <SetButton class="set-btn-box" :showSelect="false" :show-cancel="false" :showDelete="false" :showList="false" 
+            :showRegi="true" :showUpdt="false" @on-set-button-click="onSetButtonClick">
+        </SetButton>
     </div>
 
 </template>
 
 <script>
+import TodoList from '@/components/List.vue'
+import SetButton from '@/components/SetButton.vue'
 
 export default {
-    name: 'App',
+    name: 'TodoListStat',
     components: {
-        
+        TodoList,
+        SetButton
     },
     data() {
         return {
             searchStyle: 'margin-left: 10px;',
-            todoList: []
+            searchVal: ''
         }
     },
     methods: {
+        search() {
+            // 조회 버튼 클릭시 검색창에 입력된 문자를 가지고 제목에서 포함된 내용 찾아서 searchedList 구성하기
+            const inputVal = this.searchVal.trim();
+
+            if (inputVal === '') {
+                alert("검색어를 입력하세요.");
+                this.searchedTodoList = [];
+                return;
+            }
+
+            // 검색어가 제목에 포함된 리스트만 재구성
+            this.searchedTodoList = this.todoList.filter(todo => todo.title.includes(inputVal));
+
+            if (this.searchedTodoList.length === 0) {
+                alert("검색 결과가 없습니다.");
+            }
+        },
         saveform: function () {
             // 등록 페이지로 이동
             this.$router.push('/saveForm');
         },
-        deleteTodo(index) {
-            if(confirm("삭제하시겠습니까?")) {
-                console.log("삭제하려는 ID : " + index);
-                
-                // 해당 인텍스를 기준으로 삭제
-                this.todoList.splice(index, 1);
-
-                // 로컬스토리지에 변경된 todoList 저장
-                localStorage.setItem('todoItem', JSON.stringify(this.todoList));        
-            alert("삭제했습니다.");
-            } else {
-                alert("취소했습니다.");
+        onSetButtonClick(div) {
+            switch (div) {
+                case 'regi':
+                    this.saveform();
+                    break;
+                default:
+                    break;
             }
-        },
-        detailForm() {
-            // 등록 페이지로 이동
-            this.$router.push('/saveForm');
-        }
-    },
-    mounted() {
-        // 로컬스토리지에서 데이터 가져오기
-        const todoItem = localStorage.getItem('todoItem');
-
-        // 데이터가 존재하면 JSON 파싱하여 배열로 저장
-        if(todoItem) {
-            try {
-                this.todoList = JSON.parse(todoItem);
-                console.log("this.todoList : " + this.todoList);
-            } catch(e) {
-                console.error("JSON 파싱 오류 : ", e);
-                this.todoList = [];
-            }
-        } else {
-            // 데이터가 없다면 빈 배열로 초기화
-            this.todoList = [];
         }
     }
 }
 </script>
-
-<style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
-
-div #list {
-    border: 1px, solid, black;
-}
-
-.row {
-    border: 1px, solid, black;
-
-}
-</style>
