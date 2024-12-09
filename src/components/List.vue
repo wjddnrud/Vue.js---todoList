@@ -21,7 +21,7 @@
                     <b-col col-2>{{ todo.writer }}</b-col>
                     <b-col col-2>{{ todo.regDate }}</b-col>
                     <b-col col-2 lg="auto">
-                        <b-button variant="light" type="button" v-on:click="deleteTodo(index)">
+                        <b-button variant="light" type="button" v-on:click.stop="deleteTodo(index)">
                             <font-awesome-icon icon="trash-can" />
                         </b-button>
                     </b-col>

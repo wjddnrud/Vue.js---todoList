@@ -1,5 +1,5 @@
 <template>
-    <div id="subTitle">
+    <div class="subTitle">
         <h2>{{ text }}</h2>
     </div>
 </template>
@@ -14,3 +14,9 @@ export default {
     }
 }
 </script>
+<style>
+.subTitle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+</style>

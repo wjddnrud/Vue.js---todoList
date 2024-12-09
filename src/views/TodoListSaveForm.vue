@@ -1,13 +1,13 @@
 <template>
     <section class="todo-form">
-        <AppSubTitle :text="subTitleText"></AppSubTitle>
+        <AppSubTitle :text="subTitleText" />
         <b-container class="bv-example-row">
             <b-row class="justify-content-md-center mb-2">
                 <b-col sm="8">
                     <b-form-input placeholder="작성자" v-model="writerVal" ref="writer" :readonly="isReadonly" />
                 </b-col>
                 <b-col sm="4">
-                    <b-form-input placeholder="'-'없이 YYYYMMDD 형식의 등록일자" v-model="regDateVal" :readonly="isReadonly" />
+                    <b-form-input placeholder="'-'없이 YYYYMMDD 형식의 등록일자" v-model="regDateVal" ref="regDate" :readonly="isReadonly" />
                 </b-col>
             </b-row>
             <b-row class="justify-content-md-center mb-2">
@@ -50,6 +50,11 @@ export default {
             if (ValdUtil.isNull(this.writerVal)) {
                 alert("작성자를 입력해주세요.");
                 this.$refs.writer.focus();
+                return false;
+            }
+            if(!ValdUtil.isValdDt(this.regDateVal)) {
+                alert("날짜 형식을 다시 확인해주세요.");
+                this.$refs.regDate.focus();
                 return false;
             }
             if (ValdUtil.isNull(this.titleVal)) {

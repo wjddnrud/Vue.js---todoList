@@ -1,5 +1,5 @@
 import {CmonUtil} from '@/utils/CmonUtil'
-import moment from 'vue-moment'
+import moment from 'moment'
 
 
 export const ValdUtil = {
@@ -37,12 +37,19 @@ export const ValdUtil = {
     // 날짜 값 체크
     isValdDt(dt) {
         let isVald = false;
+        const currentYear = moment().year();
+        const dtYear = parseInt(dt.substring(0, 4), 10);
         
         if (ValdUtil.isNull(dt)) {
             return isVald;
         }
 
-        return moment(dt, "YYYY-MM-DD").isValid();
+        // 해당 년도 초과 방지
+        if(dtYear > currentYear) {
+            return isVald;
+        }
+
+        return moment(dt, "YYYY-MM-DD", true).isValid();
     },
 }
 
