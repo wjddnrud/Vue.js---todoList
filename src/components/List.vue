@@ -1,23 +1,41 @@
 <template>
-    <div id="search">
-        <input type="text" placeholder="검색" v-model="searchVal" v-on:keydown.enter="search" />
-        <button type="button" v-on:click="search" v-bind:style="searchStyle">조회</button>
-    </div>
-    <div id="list" style="margin: 5%;">
-        <div v-for="(todo, index) in (searchedTodoList.length > 0 ? searchedTodoList : todoList)" :key="todo.id"
-            class="row">
-            <router-link :to="{ name: 'todoListSaveForm', query: { index: index } }">
-                <div class="col">{{ todo.title }}</div>
-                <div class="col">{{ todo.writer }}</div>
-                <div class="col">{{ todo.regDate }}</div>
-            </router-link>
-            <button type="button" value="index" v-on:click="deleteTodo(index)">삭제</button>
+    <section class="todo-list">
+        <div class="search-bar">
+            <b-container class="bv-example-row">
+                <b-row class="justify-content-md-center">
+                    <b-col class="mb-3" sm="10">
+                        <b-form-input v-model="searchVal" v-on:keydown.enter="search" placeholder="검색"></b-form-input>
+                    </b-col>
+                    <b-col sm="2">
+                        <b-button variant="primary" v-on:click="search">조회</b-button>
+                    </b-col>
+                </b-row>
+            </b-container>
         </div>
-    </div>
+
+        <b-container class="bv-example-row todo-items"
+            v-for="(todo, index) in (searchedTodoList.length > 0 ? searchedTodoList : todoList)" :key="todo.id">
+            <router-link :to="{ name: 'todoListSaveForm', query: { index: index } }">
+                <b-row class="align-items-center">
+                    <b-col col-6>{{ todo.title }}</b-col>
+                    <b-col col-2>{{ todo.writer }}</b-col>
+                    <b-col col-2>{{ todo.regDate }}</b-col>
+                    <b-col col-2 lg="auto">
+                        <b-button variant="light" type="button" v-on:click="deleteTodo(index)">
+                            <font-awesome-icon icon="trash-can" />
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </router-link>
+        </b-container>
+    </section>
 </template>
 <script>
 export default {
     name: 'TodoList',
+    components: {
+
+    },
     data() {
         return {
             todoList: [],
@@ -82,3 +100,20 @@ export default {
     }
 }
 </script>
+<style>
+.todo-list {
+    padding: 20px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.todo-items {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+</style>
