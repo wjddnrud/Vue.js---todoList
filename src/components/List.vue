@@ -67,7 +67,6 @@ export default {
             console.log("inputVal : " + inputVal);
 
             if (inputVal === '') {
-                alert("검색어를 입력하세요.");
                 this.searchedTodoList = [];
                 return;
             }
