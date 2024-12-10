@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <h1>Todo List</h1>
+        <p>Todo List</p>
     </div>
 </template>
 <script>
@@ -9,7 +9,9 @@ export default {
 }
 </script>
 <style>
-h1 {
-    padding: 20px;
+#header p {
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 40px;
 }
 </style>

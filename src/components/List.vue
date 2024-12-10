@@ -1,100 +1,66 @@
 <template>
     <section class="todo-list">
-        <div class="search-bar">
-            <b-container class="bv-example-row">
-                <b-row class="justify-content-md-center">
-                    <b-col class="mb-3" sm="10">
-                        <b-form-input v-model="searchVal" v-on:keydown.enter="search" placeholder="검색"></b-form-input>
-                    </b-col>
-                    <b-col sm="2">
-                        <b-button variant="primary" v-on:click="search">조회</b-button>
-                    </b-col>
-                </b-row>
-            </b-container>
-        </div>
-
-        <b-container class="bv-example-row todo-items"
-            v-for="(todo, index) in (searchedTodoList.length > 0 ? searchedTodoList : todoList)" :key="todo.id">
-            <router-link :to="{ name: 'todoListSaveForm', query: { index: index } }">
-                <b-row class="align-items-center">
+        <div class="scrollable-container">
+            <b-container class="bv-example-row todo-items" v-for="todo in filteredTodoList" :key="todo.idx"
+                :class="{ 'hover-active': todo.isHovered }" @mouseenter="todo.isHovered = true"
+                @mouseleave="todo.isHovered = false">
+                <b-row class="align-items-center" @click="viewTodo(todo.idx)">
                     <b-col col-6>{{ todo.title }}</b-col>
                     <b-col col-2>{{ todo.writer }}</b-col>
                     <b-col col-2>{{ todo.regDate }}</b-col>
                     <b-col col-2 lg="auto">
-                        <b-button variant="light" type="button" v-on:click.stop="deleteTodo(index)">
+                        <b-button variant="light" type="button" v-on:click.stop.prevent="deleteTodo(todo.idx)">
                             <font-awesome-icon icon="trash-can" />
                         </b-button>
                     </b-col>
                 </b-row>
-            </router-link>
-        </b-container>
+            </b-container>
+            <b-container class="bv-example-row" v-if="!todoList.length">조회된 Todo가 없습니다.</b-container>
+        </div>
     </section>
 </template>
 <script>
 export default {
     name: 'TodoList',
-    components: {
-
-    },
     data() {
         return {
             todoList: [],
-            searchedTodoList: [],
-            searchVal: ''
         }
+    },
+    props: {
+        searchQuery: String // 부모로부터 검색어 전달받음
     },
     methods: {
         deleteTodo(index) {
-            if (confirm("삭제하시겠습니까?")) {
-
-                // 해당 인텍스를 기준으로 삭제
-                this.todoList.splice(index, 1);
-
-                // 로컬스토리지에 변경된 todoList 저장
-                localStorage.setItem('todoItem', JSON.stringify(this.todoList));
-                alert("삭제했습니다.");
+            if (confirm("Todo를 삭제하시겠습니까?")) {
+                this.todoList = this.todoList.filter((todo) => todo.idx !== index);
+                localStorage.setItem('todoItem', JSON.stringify(this.todoList)); // 로컬스토리지에 변경된 todoList 저장
+                alert("Todo가 삭제되었습니다.");
             } else {
-                alert("취소했습니다.");
+                alert("취소되었습니다.");
             }
         },
-        detailForm() {
-            // 등록 페이지로 이동
-            this.$router.push('/saveForm');
-        },
-        search() {
-            // 조회 버튼 클릭시 검색창에 입력된 문자를 가지고 제목에서 포함된 내용 찾아서 searchedList 구성하기
-            const inputVal = this.searchVal.trim();
-            console.log("inputVal : " + inputVal);
-
-            if (inputVal === '') {
-                this.searchedTodoList = [];
-                return;
-            }
-
-            // 검색어가 제목에 포함된 리스트만 재구성
-            this.searchedTodoList = this.todoList.filter(todo => todo.title.includes(inputVal));
-
-            console.log("this.searchedTodoList.length : " + this.searchedTodoList.length);
-            if (this.searchedTodoList.length === 0) {
-                alert("검색 결과가 없습니다.");
-            }
+        viewTodo(index) {
+            this.$router.push({
+                name: "todoListSaveForm",
+                query: { index }
+            });
         },
     },
     mounted() {
-        // 로컬스토리지에서 데이터 가져오기
-        const todoItem = localStorage.getItem('todoItem');
+        const todoItem = localStorage.getItem('todoItem');  // 로컬스토리지에서 데이터 가져오기
 
-        // 데이터가 존재하면 JSON 파싱하여 배열로 저장
         if (todoItem) {
-            try {
-                this.todoList = JSON.parse(todoItem);
-            } catch (e) {
-                console.error("JSON 파싱 오류 : ", e);
-                this.todoList = [];
-            }
+            this.todoList = JSON.parse(todoItem);   // 데이터가 존재하면 JSON 파싱하여 배열로 저장
         } else {
-            // 데이터가 없다면 빈 배열로 초기화
-            this.todoList = [];
+            this.todoList = []; // 데이터가 없다면 빈 배열로 초기화
+        }
+    },
+    computed: {
+        // eslint-disable-next-line vue/no-dupe-keys
+        filteredTodoList() {
+            if (!this.searchQuery) return this.todoList; // 검색어 없으면 전체 표시
+            return this.todoList.filter((todo) => todo.title.toLowerCase().includes(this.searchQuery.toLowerCase()));   // 검색어에 따라 필터링
         }
     }
 }
@@ -109,10 +75,28 @@ export default {
 }
 
 .todo-items {
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 8px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: #D8D8D8;
+}
+
+.hover-active {
+    background-color: #CECEF6;
+    cursor: pointer;
+}
+
+.scrollable-container {
+    max-height: 430px;
+    /* 최대 높이 (5개 항목 기준) */
+    overflow-y: auto;
+    /* 스크롤 활성화 */
+    border: 1px solid #ddd;
+    /* 컨테이너 테두리 */
+    border-radius: 13px;
+    padding: 10px;
     background-color: #fff;
 }
 </style>

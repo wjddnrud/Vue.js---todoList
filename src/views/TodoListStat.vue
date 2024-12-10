@@ -1,6 +1,7 @@
 <template>
     <section class="todo-stat">
-        <TodoList />
+        <SearchBar :searchQuery="searchQuery" @updateQuery="updateSearchQuery" />
+        <TodoList :searchQuery="searchQuery" />
         <div class="button-container">
             <b-button variant="primary" type="button" v-on:click="saveform">등록</b-button>
         </div>
@@ -10,21 +11,25 @@
 
 <script>
 import TodoList from '@/components/List.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 export default {
     name: 'TodoListStat',
     components: {
-        TodoList
+        TodoList,
+        SearchBar
     },
     data() {
         return {
-
+            searchQuery: ''
         }
     },
     methods: {
         saveform: function () {
-            // 등록 페이지로 이동
-            this.$router.push('/saveForm');
+            this.$router.push('/saveForm'); // 등록 페이지로 이동
+        },
+        updateSearchQuery(newQuery) {
+            this.searchQuery = newQuery; // SearchBar에서 입력한 검색어 업데이트
         }
     }
 }
