@@ -81,9 +81,9 @@ export default {
             datatype: "local", // 데이터 형식
             colModel: [
                 { label: "ID", name: "idx", key: true, hidden: true },
-                { label: "작성자", name: "writer" },
-                { label: "제목", name: "title", width: 200 },
-                { label: "작성일자", name: "regDate" },
+                { label: "작성자", name: "writer", align: "center" },
+                { label: "제목", name: "title", width: 900, align: "center" },
+                { label: "작성일자", name: "regDate", align: "center" },
                 {
                     lable: "삭제", name: "", formatter: () => {
                         return `<b-button class="btn btn-danger btn-sm delete-btn">삭제</b-button>`;
@@ -97,9 +97,9 @@ export default {
             },
             data: this.filteredTodoList,    // 초기 데이터
             viewrecords: true,
-            height: 250,
+            height: 'auto',
             rowNum: 5,
-            autoWidth: true,
+            autowidth: true,
             pager: "#todo-pager",
             emptyrecords: "조회된 Todo가 없습니다.",
             gridComplete: () => {
