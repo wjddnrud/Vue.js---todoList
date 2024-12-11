@@ -1,24 +1,35 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'       // 설치한 라우터를 가져와서
+import router from './router'
 
+// <bootstrapVue3> import
 import { BootstrapVue3 } from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
-// fontawesome import
+// <jquery> import
+import $ from 'jquery'
+
+// <jqgrid> import
+import 'jqGrid/js/i18n/grid.locale-kr.js'
+// 그리드 핸들링 관련 모듈 2개 필수 (드래그 및 에디트 등...)
+import 'jquery-ui/dist/jquery-ui.js'
+import 'jqGrid/js/jquery.jqGrid.min.js'
+
+// <fontawesome> import
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(fas)
 
+window.$ = $;
+window.jQuery = $;
 
 const app = createApp(App);
-app.use(router);        // 사용할 것이라고 선언. use(router) 추가                  
-app.use(BootstrapVue3);
+
 app.component('font-awesome-icon', FontAwesomeIcon);
+
+app.use(router);
+app.use(BootstrapVue3);
+
 app.mount('#app');
-
-// import TodoList from './views/TodoList.vue'
-// createApp(TodoList).mount('#app')
-

@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import "@/assets/css/content/jqGrid_mod.css"
+import 'jqGrid/css/ui.jqgrid.css'
 import AppHeader from '@/components/layout/AppHeader.vue'
 
 export default {
@@ -42,7 +44,6 @@ nav a.router-link-exact-active {
   max-width: 800px; /* 원하는 최대 폭을 설정 */
   margin: 0 auto; /* 양쪽 여백을 동일하게 */
   padding: 20px; /* 내부 여백 추가 */
-  padding: 20px;
   background-color: #A9BCF5; /* 기존 배경 색상 유지 */
   border-radius: 30px; /* 둥근 모서리 */
 }
