@@ -10,7 +10,6 @@ export default {
 </script>
 <style>
 #header p {
-    padding-top: 20px;
     font-weight: bold;
     font-size: 40px;
 }

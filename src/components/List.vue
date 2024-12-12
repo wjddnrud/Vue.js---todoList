@@ -18,7 +18,7 @@
             <b-container class="bv-example-row" v-if="!todoList.length">조회된 Todo가 없습니다.</b-container>
         </div>
     </section> -->
-    <div>
+    <div id="wrapper-grid">
         <table id="todo-grid"></table>
         <div id="todo-pager"></div>
     </div>
@@ -84,12 +84,7 @@ export default {
                 { label: "작성자", name: "writer", align: "center" },
                 { label: "제목", name: "title", width: 900, align: "center" },
                 { label: "작성일자", name: "regDate", align: "center" },
-                {
-                    lable: "삭제", name: "", formatter: () => {
-                        return `<b-button class="btn btn-danger btn-sm delete-btn">삭제</b-button>`;
-                    },
-                    align: "center"
-                }
+                { lable: "삭제", name: "", formatter: () => { return `<b-button class="btn btn-danger btn-sm delete-btn">삭제</b-button>`; }, align: "center" }
             ],
             onSelectRow: (rowId) => {
                 // rowId는 idx로 설정
@@ -100,6 +95,7 @@ export default {
             height: 'auto',
             rowNum: 5,
             autowidth: true,
+            shrinkToFit: true,
             pager: "#todo-pager",
             emptyrecords: "조회된 Todo가 없습니다.",
             gridComplete: () => {
@@ -109,6 +105,12 @@ export default {
                     this.handleDeleteClick(Number(rowId));
                 });
             },
+        });
+
+        // 그리드 너비 반응형 조정
+        $(window).on('resize.jqGrid', function() {
+            console.log("resize.jqGrid!!");
+            jQuery("#todo-grid").jqGrid('setGridWidth', $("#wrapper-grid").width())
         });
     },
     computed: {

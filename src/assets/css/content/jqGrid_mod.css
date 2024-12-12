@@ -32,6 +32,7 @@ div.ui-jqgrid.ui-widget.ui-widget-content {
     /* height: 30px; */
     height: auto;
     white-space: normal !important;
+    border-radius: 7px;
 }
 .ui-widget-content {
     border: 1px solid #E1E1E1;
@@ -86,7 +87,7 @@ div.ui-jqgrid.ui-widget.ui-widget-content {
     background-color: #ffffff;
 } */
 .ui-jqgrid tr.jqgrow:hover {
-    background-color: #bfbfcb;
+    background-color: #CED8F6;
 }
 .ui-jqgrid .ui-pg-selbox {
     background-color: #f3f3f3;

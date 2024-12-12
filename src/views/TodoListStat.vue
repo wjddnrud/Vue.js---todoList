@@ -1,4 +1,5 @@
 <template>
+    <HeaderComponent />
     <section class="todo-stat">
         <SearchBar :searchQuery="searchQuery" @updateQuery="updateSearchQuery" />
         <TodoList :searchQuery="searchQuery" />
@@ -10,14 +11,16 @@
 </template>
 
 <script>
+import HeaderComponent from '@/components/layout/AppHeader.vue'
 import TodoList from '@/components/List.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 export default {
     name: 'TodoListStat',
     components: {
+        HeaderComponent,
         TodoList,
-        SearchBar
+        SearchBar,
     },
     data() {
         return {
@@ -41,6 +44,6 @@ export default {
 
 .button-container {
     text-align: right;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 </style>
