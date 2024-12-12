@@ -25,11 +25,18 @@ library.add(fas)
 window.$ = $;
 window.jQuery = $;
 
+// <pinia> import
+import { createPinia } from 'pinia';
+const pinia = createPinia()
+
+
+
 const app = createApp(App);
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.use(router);
 app.use(BootstrapVue3);
+app.use(pinia);
 
 app.mount('#app');
