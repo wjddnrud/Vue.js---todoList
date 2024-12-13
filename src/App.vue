@@ -1,12 +1,27 @@
 <template>
-  <div class="app-container">
+  <!-- <div class="app-container">
     <router-view />
-  </div>
+  </div> -->
+  <nav>
+    <router-link to="/list">TODOLIST /</router-link>
+    <router-link to="/pmsGrid"> PMSGRID</router-link>
+  </nav>
+  <router-view />  
 </template>
 
 <script>
 import "@/assets/css/content/jqGrid_mod.css"
 import 'jqGrid/css/ui.jqgrid.css'
+
+
+import '@/static/css/bootstrap.css'
+import '@/static/css/style.css'
+import '@/static/css/index.css'
+import '@/static/css/web.css'
+
+import "@/assets/css/common.css"
+import "@/assets/css/content/common_content.css"
+
 
 export default {
   name: 'App'

@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TodoList from '@/views/TodoListStat.vue'
 import TodoListSaveForm from '@/views/TodoListSaveForm.vue'
+import PmsGrid from '@/views/PmsGrid.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    redirect: '/list',
+    redirect: '/pmsGrid',
     component: HomeView
   },
   {
@@ -28,6 +29,11 @@ const routes = [
     name: 'todoListSaveForm',
     component: TodoListSaveForm   // 상단에 컴포넌트 파일을 import하고 가져와 사용하는 방법.
     // component: () => import('../views/TodoListSaveForm.vue')   // 함수 방식으로 컴포넌트를 직접 import하는 방법.
+  },
+  {
+    path: '/pmsGrid',
+    name: 'pmsGrid',
+    component: PmsGrid
   }
 ]
 
